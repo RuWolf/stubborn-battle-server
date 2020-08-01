@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 const fetch = require('node-fetch');
+const Max = require('../models/maxcounr');
 
 router.post('/init', async (req, res) => {
   /* const uuid = req.body;
@@ -17,6 +18,21 @@ router.post('/init', async (req, res) => {
   console.log(result.result) */
   res.json({result: 'result.result'})
 });
+
+router.post('/max', async (req, res) => {
+  const count = req.body.count || 0;
+
+  const newMaxCount = new Max({maxCount: count});
+
+  try {
+    await newMaxCount.save();
+    res.json('saved')
+  } catch {
+    res.json('no saved')
+  }
+});
+
+
 
 router.post('/request', async (req, res) => {
   const {cuid, text} = req.body;

@@ -19,11 +19,15 @@ app.use(
 
 app.use('/api', require('./router/inquiry'));
 
-//const PORT = config.get('port') || 5000;
-const PORT = process.env.PORT || 80;
+const PORT = config.get('port') || 5000;
+//const PORT = process.env.PORT || 80;
+
+const mongoose = require("mongoose");
+
 
 async function start() {
   try {
+    await mongoose.connect('mongodb://mongodb+srv://rn-test-battle:1234rhrn@cluster0.6dhnl.mongodb.net/<dbname>?retryWrites=true&w=majority/maxCount', { useNewUrlParser: true });
     app.listen(PORT, () => console.log(`App has been started on port ${PORT}`));
   } catch (e) {
     console.log('Server error, ', e.message);
