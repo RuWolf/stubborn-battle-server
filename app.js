@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const config = require('config');
 const bodyParser = require("body-parser");
+const MongoClient = require("mongodb").MongoClient;
 
 
 const app = express();
@@ -24,10 +25,23 @@ const PORT = config.get('port') || 5000;
 
 const mongoose = require("mongoose");
 
+/* const url = "mongodb+srv://rn-test-battle:1234rhrn@cluster0.6dhnl.mongodb.net/<dbname>?retryWrites=true&w=majorit";
+const mongoClient = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+ 
+mongoClient.connect(function(err, client){
+    if(err) return console.log(err);
+      
+    const db = client.db("usersdb");
+    db.collection("users").findOne(function(err, doc){
+              
+        console.log(doc);
+        client.close();
+    });
+}); */
 
 async function start() {
   try {
-    await mongoose.connect('mongodb://mongodb+srv://rn-test-battle:1234rhrn@cluster0.6dhnl.mongodb.net/<dbname>?retryWrites=true&w=majority/maxCount', { useNewUrlParser: true });
+    await mongoose.connect('mongodb+srv://rn-test-battle:1234rhrn@cluster0.6dhnl.mongodb.net/dateBattles?retryWrites=true&w=majorit', { useNewUrlParser: true, useUnifiedTopology: true }),
     app.listen(PORT, () => console.log(`App has been started on port ${PORT}`));
   } catch (e) {
     console.log('Server error, ', e.message);

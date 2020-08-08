@@ -1,22 +1,42 @@
 const {Router} = require('express');
 const router = Router();
 const fetch = require('node-fetch');
-const Max = require('../models/maxcounr');
+const mongoose = require('mongoose');
+const Record = require('../models/maxcount');
 
 router.post('/init', async (req, res) => {
-  /* const uuid = req.body;
-  const response = await fetch("https://biz.nanosemantics.ru/api/bat/nkd/json/Chat.init", {
-    headers: {
-      "Content-Type": "application/json"
-    },
-    method: "POST",
-    body: JSON.stringify({
-      'uuid': uuid.uuid,
-    })
-  });
-  let result = await response.json();
-  console.log(result.result) */
-  res.json({result: 'result.result'})
+
+  const testRecord = req.query.testRecord || 0
+
+  /* const testRecord = Record.findOne({})
+  console.log(testRecord)  */
+  Record.updateOne(
+    {}, 
+    { $set: {count: testRecord}},
+    () => {
+      mongoose.disconnect(); 
+  }
+  );
+
+  /* Record.findOneAndUpdate(
+    {}, // критерий выборки
+    { $set: {count: 25}}, // параметр обновления
+    function(err, result){
+         
+        console.log(result);
+        client.close();
+    }
+  ); */
+  /* const record = new Record({
+    count: 41
+  });*/
+  
+  /* record.save(function(err){
+    if(err) return console.log(err);
+    console.log("Сохранен объект", record);
+    mongoose.disconnect(); 
+  }) */
+  res.json({result: testRecord})
 });
 
 router.post('/max', async (req, res) => {
