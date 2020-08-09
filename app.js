@@ -2,8 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const config = require('config');
 const bodyParser = require("body-parser");
-const MongoClient = require("mongodb").MongoClient;
-
 
 const app = express();
 app.use(express.json());
@@ -20,24 +18,10 @@ app.use(
 
 app.use('/api', require('./router/inquiry'));
 
-const PORT = config.get('port') || 5000;
-//const PORT = process.env.PORT || 80;
+//const PORT = config.get('port') || 5000;
+const PORT = process.env.PORT || 80;
 
 const mongoose = require("mongoose");
-
-/* const url = "mongodb+srv://rn-test-battle:1234rhrn@cluster0.6dhnl.mongodb.net/<dbname>?retryWrites=true&w=majorit";
-const mongoClient = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
- 
-mongoClient.connect(function(err, client){
-    if(err) return console.log(err);
-      
-    const db = client.db("usersdb");
-    db.collection("users").findOne(function(err, doc){
-              
-        console.log(doc);
-        client.close();
-    });
-}); */
 
 async function start() {
   try {
