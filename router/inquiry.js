@@ -6,37 +6,28 @@ const Record = require('../models/maxcount');
 
 router.post('/init', async (req, res) => {
 
-  const testRecord = req.query.testRecord || 0
+  const idRecord = '5f2f2530d6dc6d6d668bd141'
 
-  /* const testRecord = Record.findOne({})
-  console.log(testRecord)  */
-  Record.updateOne(
-    {}, 
-    { $set: {count: testRecord}},
-    () => {
-      mongoose.disconnect(); 
-  }
-  );
+  let testRecord = parseInt(req.query.testRecord, 10) || 0
 
-  /* Record.findOneAndUpdate(
-    {}, // критерий выборки
-    { $set: {count: 25}}, // параметр обновления
-    function(err, result){
-         
-        console.log(result);
-        client.close();
+   Record.findOne({_id: idRecord}, async (err, docs) => {
+    //await mongoose.disconnect();
+   
+    if(err) return console.log(err)
+
+    if (testRecord > docs.count) {
+      Record.updateOne(
+        {_id: idRecord}, 
+        { $set: {count: testRecord}},
+        () => {
+          mongoose.disconnect(); 
+        }
+      );
+      res.json({record: testRecord})
+    } else {
+      res.json({record: docs.count})
     }
-  ); */
-  /* const record = new Record({
-    count: 41
-  });*/
-  
-  /* record.save(function(err){
-    if(err) return console.log(err);
-    console.log("Сохранен объект", record);
-    mongoose.disconnect(); 
-  }) */
-  res.json({result: testRecord})
+  }) 
 });
 
 router.post('/max', async (req, res) => {
